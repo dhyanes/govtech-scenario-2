@@ -1,0 +1,9 @@
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+helm install prometheus prometheus-community/kube-prometheus-stack -f values.yaml -n monitoring-ns
+kubectl port-forward service/prometheus-operated 9091:9090 -n monitoring-ns --address=0.0.0.0 &
+kubectl port-forward service/prometheus-grafana 3001:80 -n monitoring-ns --address=0.0.0.0 & 
+Access promethus targets using http://<IP>:9091/targets ( Username: admin Password: prom-operator)
+kubectl exec -it mysql-0 -n monitoring-ns bash
+load test run - bash /load.sh
+
